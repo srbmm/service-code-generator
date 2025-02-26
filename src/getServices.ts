@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestType, ServiceType } from "./types";
-import { idToName } from "./utils/idToName";
+import { makeName } from "./utils/makeName";
 
 export const getServices = async (address: string) => {
   const serviceArr: ServiceType[] = [];
@@ -14,7 +14,8 @@ export const getServices = async (address: string) => {
       for (let requestStr of requestsStr) {
         const requestObject = requestsObject[requestStr] ?? {};
         const id = requestObject?.operationId ?? "";
-        const name = idToName(requestObject?.operationId) ?? "";
+        const name =
+          makeName(requestObject?.summary ?? "", requestStr ?? "") ?? "";
         let refReq =
           requestObject?.requestBody?.content?.["application/json"]?.schema?.[
             "$ref"
